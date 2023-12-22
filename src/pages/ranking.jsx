@@ -6,8 +6,8 @@ const Rank = () => {
   const [students, set_students] = useState([]);
 
   const fetchData = () => {
-    fetch("http://localhost:8800/api/students/get_all")
-      // fetch("https://hamily-be.onrender.com/api/students/")
+    // fetch("http://localhost:8800/api/students/get_all")
+    fetch("https://hamily-be.onrender.com/api/students/")
       .then((res) => res.json())
       .then((data) => {
         set_students(data);
