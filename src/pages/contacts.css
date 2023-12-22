@@ -1,0 +1,46 @@
+.contacts {
+  display: grid;
+  border-style: solid;
+  border-color: black;
+  grid-template-columns: 300px 100px 500px;
+  grid-template-rows: 100px 300px 50px;
+}
+
+.title {
+  border-style: solid;
+  border-color: green;
+  grid-column: 1 / span 3;
+  grid-row: 1 / 2;
+
+  font-size: 80px;
+}
+
+.profile_img {
+  border-style: solid;
+  border-color: green;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.bio {
+  border-style: solid;
+  border-color: green;
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+
+.links {
+  border-style: solid;
+  border-color: green;
+  grid-column: 1 / span 3;
+  grid-row: 3 / 4;
+
+  display: grid;
+  border-style: solid;
+  border-color: red;
+  grid-template-columns: repeat(3, 250px);
+  column-gap: 75px;
+
+  justify-items: center;
+  font-size: 25px;
+}

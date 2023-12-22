@@ -1,25 +1,29 @@
-import logo from "./logo.svg";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/layout";
+import Home from "./pages/home";
+import Ranking from "./pages/ranking";
+import Contact from "./pages/contact";
+import Nonpage from "./pages/nonpage";
 
-function App() {
+// import Blogs from "./pages/Blogs";
+// import Contact from "./pages/Contact";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Hamily
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="ranking" element={<Ranking />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="*" element={<Nonpage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
+
+// https://www.hamiltonappdev.com
+// https://appdev-events.vercel.app/home
