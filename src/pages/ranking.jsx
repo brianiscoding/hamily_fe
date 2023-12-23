@@ -7,7 +7,7 @@ const Rank = () => {
 
   const fetchData = () => {
     // fetch("http://localhost:8800/api/students/get_all")
-    fetch("https://hamily-be.onrender.com/api/students/get_all")
+    fetch("https://hamily-be.onrender.com/api/students/all")
       .then((res) => res.json())
       .then((data) => {
         set_students(data);
@@ -29,7 +29,7 @@ const Rank = () => {
       {students.map((student, i) => (
         <div key={i}>
           <h2>
-            Card {i + 1} {student.name} {student.year}
+            Card {i + 1} {student.first} {student.last}
           </h2>
         </div>
       ))}
