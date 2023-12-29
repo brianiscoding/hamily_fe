@@ -1,34 +1,89 @@
+import { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
-import "./layout.css";
-import logo from "../logo.svg";
+
+import Cookies from "js-cookie";
+import axios from "axios";
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 
 const Layout = () => {
-  return (
-    <div className="wrapper">
-      <div className="nav">
-        <div className="logo">
-          <img src={logo} alt="logo" />
-        </div>
+  const [user, set_user] = useState();
 
-        <div className="nav1">
+  const login = (token) => {
+    Cookies.set("login_attempt", token, { secure: true });
+    // check valid login
+    axios
+      .get("http://localhost:8080/api/auth/login", {
+        withCredentials: true,
+      })
+      .then((data) => {
+        Cookies.set("user_access_token", token);
+        set_user(data.data);
+      })
+      .catch((err) => {
+        console.error(err.response.data);
+      })
+      .finally(() => {
+        // not sure what glogout does
+        googleLogout();
+        Cookies.remove("login_attempt");
+      });
+  };
+
+  const first_login = useGoogleLogin({
+    onSuccess: (res) => login(res.access_token),
+    onError: (err) => console.error(err),
+  });
+
+  const logout = () => {
+    // not sure what glogout does
+    googleLogout();
+    Cookies.remove("user_access_token");
+    set_user();
+  };
+
+  useEffect(() => {
+    const user_access_token = Cookies.get("user_access_token");
+    // check for cookie
+    if (!user_access_token) {
+      // no cookie => no user
+      set_user();
+      return;
+    }
+
+    login(user_access_token);
+  }, []);
+
+  return (
+    <div className="wrapper_layout">
+      <div className="nav">
+        <div className="nav_home">
           <Link to="/">home</Link>
         </div>
 
-        <div className="nav2">
-          <Link to="/projects">projects</Link>
+        <div className="nav_ranking">
+          <Link to="/">ranking</Link>
         </div>
 
-        <div className="nav3">
-          <Link to="/ranking">ranking</Link>
+        <div className="nav_vote">
+          <Link to="/vote">vote</Link>
         </div>
 
-        <div className="nav4">
-          <Link to="/contact">contact</Link>
+        <div className="nav_profile">
+          <Link to="/profile">profile</Link>
         </div>
+
+        {user ? (
+          <div>
+            <Link to="/profile">{user.name}</Link>
+            <button onClick={logout}>logout</button>
+          </div>
+        ) : (
+          <button onClick={first_login}>login</button>
+        )}
       </div>
 
       <div className="main">
-        <Outlet />
+        <Outlet context={user} />
       </div>
     </div>
   );
