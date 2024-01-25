@@ -1,8 +1,8 @@
-.ranking {
+/* .ranking {
   display: grid;
   gap: 1em;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-}
+} */
 
 /* 
 .grid > div {
@@ -10,3 +10,38 @@
   text-align: center;
   background: grey;
 } */
+
+.card {
+  height: 200px;
+  width: 270px;
+
+  border-style: solid;
+  border-color: rgb(36, 31, 38);
+  border-width: 10;
+
+  background: beige;
+  /* border-radius: 10px; */
+
+  display: grid;
+  grid-template-columns: 220px 50px;
+  grid-template-rows: 160px 20px 20px;
+}
+
+.picture {
+  /* border-radius: 10px 0 0 0; */
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.name {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  padding: 0 0 0 10px;
+  justify-items: left;
+}

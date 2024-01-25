@@ -12,8 +12,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="ranking" element={<Ranking />} />
-          <Route path="vote" element={<Vote />} />
+          <Route path="ranking/:year" element={<Ranking />} />
+          <Route path="vote/:year/:new_old" element={<Vote />} />
           <Route path="profile" element={<Profile />} />
           <Route path="*" element={<Nonpage />} />
         </Route>
