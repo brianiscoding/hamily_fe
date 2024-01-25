@@ -11,6 +11,7 @@ const Layout = () => {
   const [user, set_user] = useState();
 
   const login = (token) => {
+    console.log(token);
     // set secure???
     Cookies.set("user_access_token", token);
     // check valid login
