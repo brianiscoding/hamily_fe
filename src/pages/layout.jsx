@@ -8,44 +8,40 @@ import axios from "axios";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 
 const Layout = () => {
-  const cookie_settings = {
-    domain: "https://hamily-be.onrender.com",
-    // domain: process.env.REACT_APP_BE_URL,
-    secure: true,
-  };
-  // const cookie_settings = {};
   const [user, set_user] = useState();
 
-  const login = (token) => {
-    Cookies.set("user_access_token", token, cookie_settings);
+  const login = (user_access_token) => {
     // check valid login
     axios
       .get(`${process.env.REACT_APP_BE_URL}/auth/login`, {
-        withCredentials: true,
+        headers: { user_access_token },
       })
-      .then((data) => set_user(data.data))
+
+      .then((data) => {
+        Cookies.set("user_access_token", user_access_token);
+        set_user(data.data);
+      })
+
       .catch((err) => {
-        Cookies.remove("user_access_token");
-        set_user();
+        logout();
         console.log(err);
       })
-      // not sure what glogout does
-      .finally(() => googleLogout());
+
+      .finally(() => googleLogout()); // not sure what glogout does
   };
 
   const first_login = useGoogleLogin({
     onSuccess: (res) => login(res.access_token),
     onError: (err) => {
-      Cookies.remove("user_access_token");
+      logout();
       console.error(err);
     },
   });
 
   const logout = () => {
-    // not sure what glogout does
-    Cookies.remove("user_access_token", cookie_settings);
-    googleLogout();
+    Cookies.remove("user_access_token");
     set_user();
+    googleLogout(); // not sure what glogout does
   };
 
   useEffect(() => {
@@ -53,7 +49,7 @@ const Layout = () => {
     // check for cookie
     if (user_access_token) login(user_access_token);
     // no cookie => no user
-    else set_user();
+    else logout();
   }, []);
 
   return (
