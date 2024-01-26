@@ -11,9 +11,11 @@ const Layout = () => {
   const [user, set_user] = useState();
 
   const login = (token) => {
-    console.log(token);
     // set secure???
-    Cookies.set("user_access_token", token);
+    Cookies.set("user_access_token", token, {
+      domain: process.env.REACT_APP_BE_URL,
+      secure: true,
+    });
     // check valid login
     axios
       .get(`${process.env.REACT_APP_BE_URL}/auth/login`, {
