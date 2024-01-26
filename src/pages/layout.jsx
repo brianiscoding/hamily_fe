@@ -9,7 +9,7 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 
 const Layout = () => {
   const cookie_settings = {
-    domain: "hamily.onrender.com",
+    domain: "https://hamily-be.onrender.com",
     // domain: process.env.REACT_APP_BE_URL,
     secure: true,
   };
