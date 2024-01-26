@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import "./vote.css";
 import logo from "../logo.svg";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Vote = () => {
   const [students, set_students] = useState([]);
@@ -18,9 +19,7 @@ const Vote = () => {
       axios
         .get(
           `${process.env.REACT_APP_BE_URL}/students/vote/${year}/${new_old}/${max}`,
-          {
-            withCredentials: true,
-          }
+          { headers: { user_access_token: Cookies.get("user_access_token") } }
         )
         .then((data) => {
           set_students(data.data.students);
@@ -50,7 +49,7 @@ const Vote = () => {
           to: other._id,
           type,
         },
-        { withCredentials: true }
+        { headers: { user_access_token: Cookies.get("user_access_token") } }
       )
       .then((data) => {
         if (new_old === "new") {
