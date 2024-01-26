@@ -8,14 +8,15 @@ import axios from "axios";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 
 const Layout = () => {
+  const cookie_settings = {
+    domain: process.env.REACT_APP_BE_URL,
+    secure: true,
+  };
+  // const cookie_settings = {};
   const [user, set_user] = useState();
 
   const login = (token) => {
-    // set secure???
-    Cookies.set("user_access_token", token, {
-      domain: process.env.REACT_APP_BE_URL,
-      secure: true,
-    });
+    Cookies.set("user_access_token", token, cookie_settings);
     // check valid login
     axios
       .get(`${process.env.REACT_APP_BE_URL}/auth/login`, {
@@ -41,8 +42,8 @@ const Layout = () => {
 
   const logout = () => {
     // not sure what glogout does
+    Cookies.remove("user_access_token", cookie_settings);
     googleLogout();
-    Cookies.remove("user_access_token");
     set_user();
   };
 
