@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 
 const Home = () => {
   const [user] = useOutletContext();
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -20,7 +21,7 @@ const Home = () => {
           <br />
         </div>
       ) : (
-        <div>hi</div>
+        <div onClick={() => console.log(user)}>hi</div>
       )}
     </div>
   );

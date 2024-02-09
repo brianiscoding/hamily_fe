@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Outlet } from "react-router-dom";
 import "./layout.css";
-import logo from "../logo.svg";
+// import logo from "../logo.svg";
 
 import Cookies from "js-cookie";
 import axios from "axios";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+
 const Layout = () => {
   const [user, set_user] = useState();
 
-  const login = (user_access_token) => {
+  const login = useCallback((user_access_token) => {
     // check valid login
     axios
       .get(`${process.env.REACT_APP_BE_URL}/auth/login`, {
@@ -28,7 +33,7 @@ const Layout = () => {
       })
 
       .finally(() => googleLogout()); // not sure what glogout does
-  };
+  }, []);
 
   const first_login = useGoogleLogin({
     onSuccess: (res) => login(res.access_token),
@@ -50,47 +55,55 @@ const Layout = () => {
     if (user_access_token) login(user_access_token);
     // no cookie => no user
     else logout();
-  }, []);
+  }, [login]);
 
   return (
-    <div className="wrapper_layout">
-      <div className="nav">
-        <Link className="nav_logo" to="/">
-          <img src={logo} alt="logo" />
-        </Link>
-
-        <div className="nav_ranking">
-          <Link to="/ranking/all">ranking</Link>
-        </div>
+    <Stack
+      direction="row"
+      sx={{ height: "100vh", width: "100vw", bgcolor: "#121212" }}
+    >
+      <Stack sx={{ height: "100vh", width: 150 }}>
+        <Button sx={{ height: 40 }} href="/">
+          Logo
+        </Button>
+        <Button sx={{ height: 40 }} href="/">
+          Home
+        </Button>
+        <Button sx={{ height: 40 }} href="/ranking/all">
+          Ranking
+        </Button>
 
         {user ? (
-          <>
-            <div className="nav_vote">
-              <Link to={`/vote/freshman/new`}>vote</Link>
-            </div>
-            <Link className="nav_profile" to="/profile">
-              {user.first} {user.last}
-            </Link>
-
-            <div className="knows">
-              {user.known_bys} / {user.knows}
-            </div>
-
-            <Link className="nav_logout" to="/" onClick={logout}>
-              logout
-            </Link>
-          </>
+          <Stack>
+            <Button sx={{ height: 40 }} href="/vote/freshman/new">
+              Vote
+            </Button>
+            <Button sx={{ height: 40 }} href="/">
+              Profile
+            </Button>
+            <Button sx={{ height: 40 }} href="/" onClick={logout}>
+              Logout
+            </Button>
+          </Stack>
         ) : (
-          <button className="nav_profile" onClick={first_login}>
-            login
-          </button>
+          <Button sx={{ height: 40, width: "auto" }} onClick={first_login}>
+            Login
+          </Button>
         )}
-      </div>
-
-      <div className="main" id="main">
+      </Stack>
+      <Divider orientation="vertical" />
+      <Box
+        sx={{
+          width: 1,
+          px: 2,
+          maxHeight: "100vh",
+          overflow: "auto",
+        }}
+        id="main"
+      >
         <Outlet context={[user]} />
-      </div>
-    </div>
+      </Box>
+    </Stack>
   );
 };
 

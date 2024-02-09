@@ -91,7 +91,7 @@ const Vote = () => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h1" sx={{}}>
+        <Typography variant="h1" sx={{ bgcolor: "lightblue" }}>
           Voting
         </Typography>
 
@@ -109,69 +109,7 @@ const Vote = () => {
         >
           <Grid container sx={{ justifyContent: "space-evenly" }}>
             {students.map((student, i) => (
-              <Grid
-                item
-                key={i}
-                sx={{
-                  mt: "40px",
-                  mx: "20px",
-                  bgcolor: "",
-                  borderRadius: 2,
-                  border: 1,
-                  borderColor: "grey.500",
-                }}
-              >
-                <Stack direction="row">
-                  <Profile student={student} i={i} />
-                  <Stack
-                    sx={{
-                      justifyContent: "space-evenly",
-                      borderRadius: 2,
-                      bgcolor: "",
-                    }}
-                  >
-                    <Button
-                      style={{
-                        maxWidth: "40px",
-                        minWidth: "40px",
-                        minHeight: "50px",
-                        maxHeight: "50px",
-                      }}
-                      key="one"
-                      disabled={student.type === "know_not"}
-                      onClick={() => handle_vote(student, "know_not", i)}
-                    >
-                      <ClearIcon />
-                    </Button>
-                    <Button
-                      style={{
-                        maxWidth: "40px",
-                        minWidth: "40px",
-                        minHeight: "50px",
-                        maxHeight: "50px",
-                      }}
-                      key="two"
-                      disabled={student.type === "know"}
-                      onClick={() => handle_vote(student, "know", i)}
-                    >
-                      <CheckIcon />
-                    </Button>
-                    <Button
-                      style={{
-                        maxWidth: "40px",
-                        minWidth: "40px",
-                        minHeight: "50px",
-                        maxHeight: "50px",
-                      }}
-                      key="three"
-                      disabled={student.type === "know_well"}
-                      onClick={() => handle_vote(student, "know_well", i)}
-                    >
-                      <StarBorderIcon />
-                    </Button>
-                  </Stack>
-                </Stack>
-              </Grid>
+              <Profile student={student} i={i} />
             ))}
           </Grid>
         </InfiniteScroll>
@@ -180,12 +118,12 @@ const Vote = () => {
       <Stack
         sx={{
           height: 300,
-          width: 180,
-          bgcolor: "",
+          width: 250,
+          bgcolor: "lime",
         }}
       >
         <Select
-          sx={{}}
+          sx={{ bgcolor: "white" }}
           value={year}
           onChange={(e) => navigate(`/vote/${e.target.value}/${new_old}`)}
         >
