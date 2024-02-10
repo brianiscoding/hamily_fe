@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useOutletContext, useParams, useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-import "./vote.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -20,6 +19,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Divider from "@mui/material/Divider";
 
+import CircularProgress from "@mui/material/CircularProgress";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
@@ -83,6 +83,13 @@ const Vote = () => {
       })
       .catch((err) => console.error(err));
 
+  const button_style = {
+    maxWidth: "40px",
+    minWidth: "40px",
+    minHeight: "50px",
+    maxHeight: "50px",
+  };
+
   return (
     <Stack direction="row" spacing={2}>
       <Stack
@@ -100,11 +107,11 @@ const Vote = () => {
           next={() => fetch_students(students.length + 100)}
           scrollableTarget="main"
           hasMore={students_max_len !== students.length}
-          loader={<h4>Loading...</h4>}
+          loader={<Typography>Loading...</Typography>}
           endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
+            <Typography style={{ textAlign: "center" }}>
+              Yay, you have seen it all!
+            </Typography>
           }
         >
           <Grid container sx={{ justifyContent: "space-evenly" }}>
@@ -122,7 +129,7 @@ const Vote = () => {
                 }}
               >
                 <Stack direction="row">
-                  <Profile student={student} i={i} />
+                  <Profile student={student} />
                   <Stack
                     sx={{
                       justifyContent: "space-evenly",
@@ -131,12 +138,7 @@ const Vote = () => {
                     }}
                   >
                     <Button
-                      style={{
-                        maxWidth: "40px",
-                        minWidth: "40px",
-                        minHeight: "50px",
-                        maxHeight: "50px",
-                      }}
+                      style={button_style}
                       key="one"
                       disabled={student.type === "know_not"}
                       onClick={() => handle_vote(student, "know_not", i)}
@@ -144,12 +146,7 @@ const Vote = () => {
                       <ClearIcon />
                     </Button>
                     <Button
-                      style={{
-                        maxWidth: "40px",
-                        minWidth: "40px",
-                        minHeight: "50px",
-                        maxHeight: "50px",
-                      }}
+                      style={button_style}
                       key="two"
                       disabled={student.type === "know"}
                       onClick={() => handle_vote(student, "know", i)}
@@ -157,12 +154,7 @@ const Vote = () => {
                       <CheckIcon />
                     </Button>
                     <Button
-                      style={{
-                        maxWidth: "40px",
-                        minWidth: "40px",
-                        minHeight: "50px",
-                        maxHeight: "50px",
-                      }}
+                      style={button_style}
                       key="three"
                       disabled={student.type === "know_well"}
                       onClick={() => handle_vote(student, "know_well", i)}

@@ -24,6 +24,7 @@ const Rank = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(`${process.env.REACT_APP_BE_URL}/students/ranking/${year}`);
     if (!loading) return;
     axios
       .get(`${process.env.REACT_APP_BE_URL}/students/ranking/${year}`)
@@ -84,26 +85,6 @@ const Rank = () => {
         </Select>
       </Stack>
     </Stack>
-
-    // <div className="ranking">
-    //   <div>Ranking</div>
-    //   {["Freshman", "Sophomore", "Junior", "Senior", "All"].map((e, i) => (
-    //     <button key={i} onClick={() => navigate(`/ranking/${e.toLowerCase()}`)}>
-    //       {e}
-    //     </button>
-    //   ))}
-    //   {students.map((student, i) => (
-    //     <div className="card" key={i}>
-    //       <div className="picture"></div>
-    //       <div className="name">
-    //         {student.first} {student.last}
-    //       </div>
-    //       <div className="split">
-    //         {student.known_bys} / {student.knows}
-    //       </div>
-    //     </div>
-    //   ))}
-    // </div>
   );
 };
 
