@@ -81,7 +81,7 @@ const Layout = () => {
             <Button sx={{ height: 40 }} href="/vote/freshman/new">
               Vote
             </Button>
-            <Button sx={{ height: 40 }} href="/profile">
+            <Button sx={{ height: 40 }} href="/profile/stats">
               Profile
             </Button>
             <Button sx={{ height: 40 }} href="/" onClick={logout}>

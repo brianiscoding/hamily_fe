@@ -16,6 +16,9 @@ import Select from "@mui/material/Select";
 
 import Profile from "../components/profile.jsx";
 
+import Popover from "@mui/material/Popover";
+import Box from "@mui/material/Box";
+
 const Rank = () => {
   const [loading, set_loading] = useState(true);
   const [students, set_students] = useState([]);
@@ -33,36 +36,62 @@ const Rank = () => {
       .finally(() => set_loading(true));
   }, [year]);
 
+  const [popover, set_popover] = useState({ id: null, anchor_el: null });
+
   return (
     <Stack direction="row" spacing={2}>
-      <Stack
-        sx={{
-          width: 1,
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography variant="h1" sx={{}}>
-          Ranking
-        </Typography>
+      <Stack sx={{ width: 1 }} spacing={2}>
+        <Typography variant="h1">Ranking</Typography>
 
-        <Grid container sx={{ justifyContent: "space-evenly" }}>
-          {students.map((student, i) => (
-            <Grid
-              item
-              key={i}
+        {students.map((student, i) => (
+          <Stack direction="row" key={i} spacing={2}>
+            <Typography
               sx={{
-                mt: "40px",
-                mx: "20px",
-                bgcolor: "",
-                borderRadius: 2,
-                border: 1,
-                borderColor: "grey.500",
+                width: "200px",
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 1,
+              }}
+              align="right"
+              onClick={(e) =>
+                set_popover({ id: i, anchor_el: e.currentTarget })
+              }
+            >
+              {student.first} {student.last}
+            </Typography>
+            <Popover
+              open={popover.id === i}
+              anchorEl={popover.anchor_el}
+              onClose={() => set_popover({ id: null, anchor_el: null })}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
               }}
             >
-              <Profile student={student} i={i} />
-            </Grid>
-          ))}
-        </Grid>
+              <Box
+                sx={{
+                  bgcolor: "black",
+                  borderRadius: 2,
+                  border: 1,
+                  borderColor: "grey.500",
+                }}
+              >
+                <Profile student={student} i={i} />
+              </Box>
+            </Popover>
+            <Box sx={{ width: 1 }}>
+              <Box
+                sx={{
+                  width: 100,
+                  height: 1,
+                  width: `${student.known_bys / students[0].known_bys}`,
+                  bgcolor: "purple",
+                }}
+              />
+            </Box>
+          </Stack>
+        ))}
       </Stack>
 
       <Stack
