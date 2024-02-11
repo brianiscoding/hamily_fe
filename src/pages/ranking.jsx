@@ -9,22 +9,29 @@ import Profile from "../components/profile.jsx";
 import Popover from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 
+import Loading from "../components/loading";
+
 const Rank = () => {
   const [students, set_students] = useState([]);
   const { year } = useParams();
   const navigate = useNavigate();
+  const [loading, set_loading] = useState(true);
 
   useEffect(() => {
-    console.log(`${process.env.REACT_APP_BE_URL}/students/ranking/${year}`);
     axios
       .get(`${process.env.REACT_APP_BE_URL}/students/ranking/${year}`)
-      .then((data) => set_students(data.data))
+      .then((data) => {
+        set_students(data.data);
+        set_loading(false);
+      })
       .catch((err) => set_students([]));
   }, [year]);
 
   const [popover, set_popover] = useState({ id: null, anchor_el: null });
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <Stack spacing={2}>
       <Typography variant="h1">Ranking</Typography>
 
@@ -96,23 +103,3 @@ const Rank = () => {
 };
 
 export default Rank;
-
-//  <Stack
-//    sx={{
-//      height: 300,
-//      width: 180,
-//      bgcolor: "",
-//    }}
-//  >
-//    <Select
-//      sx={{}}
-//      value={year}
-//      onChange={(e) => navigate(`/ranking/${e.target.value}`)}
-//    >
-//      {["Freshman", "Sophomore", "Junior", "Senior", "All"].map((e, i) => (
-//        <MenuItem value={e.toLowerCase()} key={e}>
-//          {e}
-//        </MenuItem>
-//      ))}
-//    </Select>
-//  </Stack>;
