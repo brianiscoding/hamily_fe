@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <Stack>
       <Typography variant="h1">Hamily</Typography>
-
+      <Typography>You must login with your school email!</Typography>
       <Typography>
         Voting <ClearIcon /> means you don't know them.
       </Typography>
