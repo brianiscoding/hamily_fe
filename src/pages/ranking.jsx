@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./ranking.css";
 import axios from "axios";
 
 import Stack from "@mui/material/Stack";
@@ -34,6 +33,7 @@ const Rank = () => {
           <Button
             onClick={() => navigate(`/ranking/${e.toLowerCase()}`)}
             key={e}
+            variant={`${e.toLowerCase() === year ? "outlined" : ""}`}
           >
             {e}
           </Button>

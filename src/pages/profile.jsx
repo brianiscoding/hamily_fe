@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import "./ranking.css";
 
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
