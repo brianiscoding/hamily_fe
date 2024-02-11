@@ -1,32 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Outlet } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import "./ranking.css";
-import axios from "axios";
 
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
-import Paper from "@mui/material/Paper";
 
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 
 import { useOutletContext } from "react-router-dom";
-import Profile_Card from "../components/profile.jsx";
+import ProfileCard from "../components/profile.jsx";
 import EditIcon from "@mui/icons-material/Edit";
 import LogoutIcon from "@mui/icons-material/Logout";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
 const Profile = () => {
-  const [user, logout] = useOutletContext();
-
-  // useEffect(() => {
-  //   console.log(user);
-  // }, []);
+  const [user, login, logout] = useOutletContext();
 
   return (
     <Box
@@ -46,7 +36,7 @@ const Profile = () => {
               borderColor: "grey.500",
             }}
           >
-            <Profile_Card student={user} />
+            <ProfileCard student={user} />
           </Box>
 
           <Divider sx={{ width: 1 }} />
@@ -70,13 +60,6 @@ const Profile = () => {
             >
               Edit
             </Button>
-            {/* <Button
-              sx={{ width: 1 }}
-              href="/profile/settings"
-              startIcon={<EditIcon />}
-            >
-              Settings
-            </Button> */}
             <Button
               sx={{ width: 1 }}
               onClick={logout}
@@ -87,7 +70,7 @@ const Profile = () => {
           </Stack>
 
           <Box sx={{ width: 1 }}>
-            <Outlet context={[user]} />
+            <Outlet context={[user, login]} />
           </Box>
         </Stack>
       ) : (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import "./layout.css";
 // import logo from "../logo.svg";
 
@@ -14,7 +14,7 @@ import Divider from "@mui/material/Divider";
 
 const Layout = () => {
   const [user, set_user] = useState();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const login = useCallback((user_access_token) => {
     // check valid login
@@ -48,7 +48,7 @@ const Layout = () => {
     Cookies.remove("user_access_token");
     set_user();
     googleLogout(); // not sure what glogout does
-    navigate("/");
+    // navigate("/");
   };
 
   useEffect(() => {
@@ -104,7 +104,7 @@ const Layout = () => {
         }}
         id="main"
       >
-        <Outlet context={[user, logout]} />
+        <Outlet context={[user, login, logout]} />
       </Box>
     </Stack>
   );

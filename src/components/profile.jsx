@@ -1,5 +1,4 @@
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 const Profile = ({ student }) => {
@@ -11,14 +10,21 @@ const Profile = ({ student }) => {
         px: "20px",
       }}
     >
-      <Typography variant="h6" style={{ fontWeight: 600 }}>
+      <Typography
+        variant="h6"
+        style={{
+          fontWeight: 600,
+          display: "-webkit-box",
+          overflow: "hidden",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 1,
+        }}
+      >
         {student.first} {student.last}
       </Typography>
 
       <Typography sx={{ fontSize: 16, height: "100px" }}>
-        Sed ut perspiciatis unde omnis iste natus error sit dolor{" "}
-        {student.first} {student.last} {student.first} {student.last}
-        {student.first} {student.last} {student.first} {student.last}
+        {student.bio}
       </Typography>
       <Stack sx={{ justifyContent: "space-around" }} direction="row">
         <Stack>
