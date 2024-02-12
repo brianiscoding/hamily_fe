@@ -17,7 +17,7 @@ import Profile from "../components/profile.jsx";
 const Vote = () => {
   const [students, set_students] = useState([]);
   const [students_max_len, set_students_max_len] = useState(0);
-  const [user] = useOutletContext();
+  const [user, isMobile] = useOutletContext();
   const { year, new_old } = useParams();
   const navigate = useNavigate();
 
@@ -78,6 +78,103 @@ const Vote = () => {
     minHeight: "50px",
     maxHeight: "50px",
   };
+
+  if (isMobile)
+    return (
+      <Stack>
+        <Typography variant="h6">Vote</Typography>
+        <Stack direction="row" spacing={1} justifyContent="space-between">
+          {["Freshman", "Sophomore", "Junior", "Senior"].map((e, i) => (
+            <Button
+              onClick={() => navigate(`/vote/${e.toLowerCase()}/${new_old}`)}
+              key={e}
+              style={{ maxWidth: "40px", minWidth: "40px" }}
+              sx={{ fontSize: 14 }}
+              variant={`${e.toLowerCase() === year ? "outlined" : ""}`}
+            >
+              {e.substring(0, 3)}
+            </Button>
+          ))}
+          {["New", "Old"].map((e, i) => (
+            <Button
+              onClick={() => navigate(`/vote/${year}/${e.toLowerCase()}`)}
+              style={{ maxWidth: "40px", minWidth: "40px" }}
+              sx={{ fontSize: 14 }}
+              variant={`${e.toLowerCase() === new_old ? "outlined" : ""}`}
+              key={e}
+            >
+              {e}
+            </Button>
+          ))}
+        </Stack>
+
+        <InfiniteScroll
+          dataLength={students.length}
+          next={() => fetch_students(students.length + 100)}
+          scrollableTarget="main"
+          hasMore={students_max_len !== students.length}
+          loader={<Typography>Loading...</Typography>}
+          endMessage={
+            <Typography style={{ textAlign: "center" }}>
+              Yay, you have seen it all!
+            </Typography>
+          }
+        >
+          <Grid container sx={{ justifyContent: "space-evenly" }}>
+            {students.map((student, i) => (
+              <Grid
+                item
+                key={i}
+                sx={{
+                  mt: "40px",
+                  mx: "20px",
+                  bgcolor: "",
+                  borderRadius: 2,
+                  border: 1,
+                  borderColor: "grey.500",
+                }}
+              >
+                <Stack direction="row">
+                  <Profile student={student} />
+                  <Stack
+                    sx={{
+                      justifyContent: "space-evenly",
+                      borderRadius: 2,
+                      bgcolor: "",
+                    }}
+                  >
+                    <Button
+                      style={button_style}
+                      key="one"
+                      disabled={student.type === "know_not"}
+                      onClick={() => handle_vote(student, "know_not", i)}
+                    >
+                      <ClearIcon />
+                    </Button>
+                    <Button
+                      style={button_style}
+                      key="two"
+                      disabled={student.type === "know"}
+                      onClick={() => handle_vote(student, "know", i)}
+                    >
+                      <CheckIcon />
+                    </Button>
+                    <Button
+                      style={button_style}
+                      key="three"
+                      disabled={student.type === "know_well"}
+                      onClick={() => handle_vote(student, "know_well", i)}
+                    >
+                      <StarBorderIcon />
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Grid>
+            ))}
+          </Grid>
+        </InfiniteScroll>
+      </Stack>
+    );
 
   return (
     <Stack sx={{ width: 1 }}>

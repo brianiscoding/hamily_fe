@@ -13,7 +13,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 const Home = () => {
   return (
     <Stack>
-      <Typography variant="h1">Hamily</Typography>
+      <Typography variant="h1">TheSocNet</Typography>
       <Typography>You must login with your school email!</Typography>
       <Typography>
         Voting <ClearIcon /> means you don't know them.

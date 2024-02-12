@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import "./layout.css";
 // import logo from "../logo.svg";
 
@@ -9,6 +9,10 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import HomeIcon from "@mui/icons-material/Home";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import LoginIcon from "@mui/icons-material/Login";
+import MenuIcon from "@mui/icons-material/Menu";
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -20,7 +24,10 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
+import { isMobile } from "react-device-detect";
+
 const Layout = () => {
+  const navigate = useNavigate();
   const [user, set_user] = useState();
   // const navigate = useNavigate();
 
@@ -60,13 +67,98 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    document.title = "Hamily";
+    document.title = "TheSocNet";
     const user_access_token = Cookies.get("user_access_token");
     // check for cookie
     if (user_access_token) login(user_access_token);
     // no cookie => no user
     else logout();
   }, [login]);
+
+  // MOBILE
+  const [anchorEl, setAnchorEl] = useState(null);
+  const close = (href) => {
+    setAnchorEl(null);
+    navigate(href);
+  };
+
+  // if (isMobile)
+  if (true)
+    return (
+      <Stack
+        sx={{ height: "100vh", width: "100vw", bgcolor: "#121212", pt: "20px" }}
+      >
+        <Stack
+          direction="row"
+          sx={{
+            width: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            startIcon={<MenuIcon />}
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+          />
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={() => setAnchorEl(null)}
+          >
+            <MenuItem onClick={() => close("/")}>Home</MenuItem>
+            <MenuItem onClick={() => close("/ranking/all")}>Ranking</MenuItem>
+            {user ? (
+              [
+                <MenuItem key={0} onClick={() => close("/vote/freshman/new")}>
+                  Vote
+                </MenuItem>,
+                <MenuItem key={1} onClick={() => close("/profile/stats")}>
+                  Profile
+                </MenuItem>,
+                <MenuItem
+                  key={2}
+                  onClick={() => {
+                    close("/");
+                    logout();
+                  }}
+                >
+                  Logout
+                </MenuItem>,
+              ]
+            ) : (
+              <MenuItem
+                onClick={() => {
+                  setAnchorEl(null);
+                  first_login();
+                }}
+              >
+                Login
+              </MenuItem>
+            )}
+          </Menu>
+
+          <Typography variant="h6">TheSocNet</Typography>
+
+          {user ? (
+            <Button href="/profile/stats" startIcon={<AccountBoxIcon />} />
+          ) : (
+            <Button onClick={first_login}>Login</Button>
+          )}
+        </Stack>
+
+        <Box
+          sx={{
+            width: 1,
+            px: 1,
+            height: 1,
+            overflow: "auto",
+          }}
+          id="main"
+        >
+          <Outlet context={[user, login, logout]} />
+        </Box>
+      </Stack>
+    );
 
   return (
     <Stack
@@ -81,7 +173,7 @@ const Layout = () => {
           Logo
         </Button> */}
         <Typography variant="h5" sx={{ fontFamily: "Monospace" }}>
-          Hamily
+          TheSocNet
         </Typography>
         <Button startIcon={<HomeIcon />} sx={{ height: 40 }} href="/">
           Home
@@ -139,7 +231,7 @@ const Layout = () => {
         }}
         id="main"
       >
-        <Outlet context={[user, login, logout]} />
+        <Outlet context={[user, login, logout, isMobile]} />
       </Box>
     </Stack>
   );

@@ -15,12 +15,12 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
 const Profile = () => {
-  const [user, login, logout] = useOutletContext();
+  const [user, login, logout, isMobile] = useOutletContext();
 
   return (
     <Box
       sx={{
-        width: "600px",
+        width: `${isMobile ? 1 : "600px"}`,
         margin: "auto",
         mt: "20px",
       }}
