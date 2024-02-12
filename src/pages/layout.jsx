@@ -83,7 +83,7 @@ const Layout = () => {
   };
 
   // if (isMobile)
-  if (true)
+  if (isMobile)
     return (
       <Stack
         sx={{ height: "100vh", width: "100vw", bgcolor: "#121212", pt: "20px" }}
