@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useOutletContext } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import { isMobile } from "react-device-detect";
 
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -12,7 +14,6 @@ import Box from "@mui/material/Box";
 import Loading from "../components/loading";
 
 const Rank = () => {
-  const [isMobile] = useOutletContext();
   const [students, set_students] = useState([]);
   const { year } = useParams();
   const navigate = useNavigate();

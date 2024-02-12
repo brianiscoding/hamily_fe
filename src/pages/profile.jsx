@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 
+import { isMobile } from "react-device-detect";
+
 import { useOutletContext } from "react-router-dom";
 import ProfileCard from "../components/profile.jsx";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,7 +17,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
 const Profile = () => {
-  const [user, login, logout, isMobile] = useOutletContext();
+  const [user, login, logout] = useOutletContext();
 
   return (
     <Box

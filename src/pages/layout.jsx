@@ -82,7 +82,6 @@ const Layout = () => {
     navigate(href);
   };
 
-  // if (isMobile)
   if (isMobile)
     return (
       <Stack
@@ -155,7 +154,7 @@ const Layout = () => {
           }}
           id="main"
         >
-          <Outlet context={[user, login, logout, isMobile]} />
+          <Outlet context={[user, login, logout]} />
         </Box>
       </Stack>
     );
@@ -231,7 +230,7 @@ const Layout = () => {
         }}
         id="main"
       >
-        <Outlet context={[user, login, logout, isMobile]} />
+        <Outlet context={[user, login, logout]} />
       </Box>
     </Stack>
   );

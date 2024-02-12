@@ -14,10 +14,12 @@ import CheckIcon from "@mui/icons-material/Check";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Profile from "../components/profile.jsx";
 
+import { isMobile } from "react-device-detect";
+
 const Vote = () => {
   const [students, set_students] = useState([]);
   const [students_max_len, set_students_max_len] = useState(0);
-  const [user, isMobile] = useOutletContext();
+  const [user] = useOutletContext();
   const { year, new_old } = useParams();
   const navigate = useNavigate();
 
