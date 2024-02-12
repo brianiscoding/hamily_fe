@@ -155,7 +155,7 @@ const Layout = () => {
           }}
           id="main"
         >
-          <Outlet context={[user, login, logout]} />
+          <Outlet context={[user, login, logout, isMobile]} />
         </Box>
       </Stack>
     );
