@@ -1,15 +1,10 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { isMobile } from "react-device-detect";
 
 const Profile = ({ student }) => {
   return (
-    <Stack
-      sx={{
-        width: 270,
-        height: 170,
-        px: "20px",
-      }}
-    >
+    <Stack sx={isMobile ? m_card : d_card}>
       <Typography
         variant="h6"
         style={{
@@ -45,3 +40,13 @@ const Profile = ({ student }) => {
 };
 
 export default Profile;
+
+const m_card = {
+  width: 1,
+  px: "10px",
+};
+const d_card = {
+  width: 270,
+  height: 170,
+  px: "20px",
+};

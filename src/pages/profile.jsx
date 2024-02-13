@@ -24,19 +24,11 @@ const Profile = () => {
       sx={{
         width: `${isMobile ? 1 : "600px"}`,
         margin: "auto",
-        mt: "20px",
       }}
     >
       {user ? (
-        <Stack sx={{}} alignItems="center" spacing={2}>
-          <Box
-            sx={{
-              bgcolor: "",
-              borderRadius: 2,
-              border: 1,
-              borderColor: "grey.500",
-            }}
-          >
+        <Stack alignItems="center" spacing={2}>
+          <Box sx={card}>
             <ProfileCard student={user} />
           </Box>
 
@@ -47,25 +39,13 @@ const Profile = () => {
             direction="row"
             justifyContent="space-evenly"
           >
-            <Button
-              sx={{ width: 1 }}
-              href="/profile/stats"
-              startIcon={<BarChartIcon />}
-            >
+            <Button href="/profile/stats" startIcon={<BarChartIcon />}>
               Stats
             </Button>
-            <Button
-              sx={{ width: 1 }}
-              href="/profile/edit"
-              startIcon={<EditIcon />}
-            >
+            <Button href="/profile/edit" startIcon={<EditIcon />}>
               Edit
             </Button>
-            <Button
-              sx={{ width: 1 }}
-              onClick={logout}
-              startIcon={<LogoutIcon />}
-            >
+            <Button onClick={logout} startIcon={<LogoutIcon />}>
               Logout
             </Button>
           </Stack>
@@ -75,10 +55,16 @@ const Profile = () => {
           </Box>
         </Stack>
       ) : (
-        <Typography variant="h1">Loading...</Typography>
+        <Typography variant="h6">Loading...</Typography>
       )}
     </Box>
   );
 };
 
 export default Profile;
+
+const card = {
+  borderRadius: 2,
+  border: 1,
+  borderColor: "grey.500",
+};

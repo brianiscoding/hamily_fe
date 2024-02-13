@@ -17,34 +17,29 @@ const Rank = () => {
   const [students, set_students] = useState([]);
   const { year } = useParams();
   const navigate = useNavigate();
-  const [loading, set_loading] = useState(true);
+  const [popover, set_popover] = useState({ id: null, anchor_el: null });
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BE_URL}/students/ranking/${year}`)
-      .then((data) => {
-        set_students(data.data);
-        set_loading(false);
-      })
+      .then((data) => set_students(data.data))
       .catch((err) => set_students([]));
   }, [year]);
 
-  const [popover, set_popover] = useState({ id: null, anchor_el: null });
+  if (students.length === 0) {
+    return <Loading />;
+  }
 
   if (isMobile)
-    return loading ? (
-      <Loading />
-    ) : (
+    return (
       <Stack>
         <Typography variant="h6">Ranking</Typography>
-
-        <Stack direction="row" spacing={1} justifyContent="space-between">
+        <Stack direction="row" justifyContent="space-between">
           {["Freshman", "Sophomore", "Junior", "Senior", "All"].map((e, i) => (
             <Button
               onClick={() => navigate(`/ranking/${e.toLowerCase()}`)}
               key={e}
-              style={{ maxWidth: "40px", minWidth: "40px" }}
-              sx={{ fontSize: 14 }}
+              style={m_btn}
               variant={`${e.toLowerCase() === year ? "outlined" : ""}`}
             >
               {e.substring(0, 3)}
@@ -55,34 +50,20 @@ const Rank = () => {
         {students.map((student, i) => (
           <div key={i}>
             <Stack
-              key={i}
               onClick={(e) =>
                 set_popover({ id: i, anchor_el: e.currentTarget })
               }
             >
-              <Box sx={{ width: 1 }}>
+              <Box>
                 <Box
                   sx={{
-                    height: 1,
+                    ...bar,
                     width: `${student.known_bys / students[0].known_bys}`,
-                    bgcolor: "purple",
-                    borderRadius: 2,
                   }}
                 >
-                  <Typography sx={{ fontSize: 16 }}>
-                    {student.known_bys}
-                  </Typography>
+                  <Typography sx={m_name}>{student.known_bys}</Typography>
                 </Box>
-                <Typography
-                  sx={{
-                    fontSize: 16,
-                    width: "200px",
-                    display: "-webkit-box",
-                    overflow: "hidden",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 1,
-                  }}
-                >
+                <Typography sx={m_name}>
                   {student.first} {student.last}
                 </Typography>
               </Box>
@@ -97,14 +78,7 @@ const Rank = () => {
                 horizontal: "left",
               }}
             >
-              <Box
-                sx={{
-                  bgcolor: "black",
-                  borderRadius: 2,
-                  border: 1,
-                  borderColor: "grey.500",
-                }}
-              >
+              <Box sx={card}>
                 <Profile student={student} i={i} />
               </Box>
             </Popover>
@@ -113,9 +87,7 @@ const Rank = () => {
       </Stack>
     );
 
-  return loading ? (
-    <Loading />
-  ) : (
+  return (
     <Stack spacing={2}>
       <Typography variant="h1">Ranking</Typography>
 
@@ -134,13 +106,7 @@ const Rank = () => {
       {students.map((student, i) => (
         <Stack direction="row" key={i} spacing={2}>
           <Typography
-            sx={{
-              width: "200px",
-              display: "-webkit-box",
-              overflow: "hidden",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 1,
-            }}
+            sx={d_name}
             align="right"
             onClick={(e) => set_popover({ id: i, anchor_el: e.currentTarget })}
           >
@@ -155,29 +121,18 @@ const Rank = () => {
               horizontal: "left",
             }}
           >
-            <Box
-              sx={{
-                bgcolor: "black",
-                borderRadius: 2,
-                border: 1,
-                borderColor: "grey.500",
-              }}
-            >
+            <Box sx={card}>
               <Profile student={student} i={i} />
             </Box>
           </Popover>
           <Box sx={{ width: 1 }}>
             <Box
               sx={{
-                height: 1,
+                ...bar,
                 width: `${student.known_bys / students[0].known_bys}`,
-                bgcolor: "purple",
-                borderRadius: 2,
               }}
             >
-              <Typography sx={{ pl: "10px", fontSize: 20 }}>
-                {student.known_bys}
-              </Typography>
+              <Typography sx={d_name}>{student.known_bys}</Typography>
             </Box>
           </Box>
         </Stack>
@@ -187,3 +142,31 @@ const Rank = () => {
 };
 
 export default Rank;
+
+const m_btn = { maxWidth: "40px", minWidth: "40px", fontSize: 16 };
+const card = {
+  bgcolor: "black",
+  borderRadius: 2,
+  border: 1,
+  borderColor: "grey.500",
+};
+const bar = {
+  bgcolor: "purple",
+  borderRadius: 1,
+};
+const d_name = {
+  pl: "5px",
+  fontSize: 20,
+  width: 200,
+  display: "-webkit-box",
+  overflow: "hidden",
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 1,
+};
+const m_name = {
+  fontSize: 16,
+  display: "-webkit-box",
+  overflow: "hidden",
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 1,
+};

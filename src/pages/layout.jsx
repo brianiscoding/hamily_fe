@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import "./layout.css";
 // import logo from "../logo.svg";
 
@@ -13,11 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
-import Cookies from "js-cookie";
-import axios from "axios";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -29,7 +27,6 @@ import { isMobile } from "react-device-detect";
 const Layout = () => {
   const navigate = useNavigate();
   const [user, set_user] = useState();
-  // const navigate = useNavigate();
 
   const login = useCallback((user_access_token) => {
     // check valid login
@@ -50,7 +47,6 @@ const Layout = () => {
 
       .finally(() => googleLogout()); // not sure what glogout does
   }, []);
-
   const first_login = useGoogleLogin({
     onSuccess: (res) => login(res.access_token),
     onError: (err) => {
@@ -58,14 +54,12 @@ const Layout = () => {
       console.error(err);
     },
   });
-
   const logout = () => {
     Cookies.remove("user_access_token");
     set_user();
     googleLogout(); // not sure what glogout does
     // navigate("/");
   };
-
   useEffect(() => {
     document.title = "TheSocNet";
     const user_access_token = Cookies.get("user_access_token");
@@ -84,21 +78,14 @@ const Layout = () => {
 
   if (isMobile)
     return (
-      <Stack
-        sx={{ height: "100vh", width: "100vw", bgcolor: "#121212", pt: "20px" }}
-      >
-        <Stack
-          direction="row"
-          sx={{
-            width: 1,
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+      <Stack sx={container}>
+        <Stack direction="row" spacing={2}>
           <Button
-            startIcon={<MenuIcon />}
             onClick={(e) => setAnchorEl(e.currentTarget)}
-          />
+            style={m_nav_btn}
+          >
+            <MenuIcon />
+          </Button>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -135,85 +122,63 @@ const Layout = () => {
               </MenuItem>
             )}
           </Menu>
-
-          <Typography variant="h6">TheSocNet</Typography>
-
-          {user ? (
-            <Button href="/profile/stats" startIcon={<AccountBoxIcon />} />
-          ) : (
-            <Button onClick={first_login}>Login</Button>
-          )}
+          <Typography variant="h5">TheSocNet</Typography>
         </Stack>
 
-        <Box
-          sx={{
-            width: 1,
-            px: 1,
-            height: 1,
-            overflow: "auto",
-          }}
-          id="main"
-        >
+        <Box sx={content} id="main">
           <Outlet context={[user, login, logout]} />
         </Box>
       </Stack>
     );
 
   return (
-    <Stack
-      direction="row"
-      sx={{ height: "100vh", width: "100vw", bgcolor: "#121212" }}
-    >
-      <Stack
-        sx={{ pl: "10px", height: "100vh", width: 150 }}
-        alignItems="flex-start"
-      >
-        {/* <Button sx={{ height: 40 }} href="/">
-          Logo
-        </Button> */}
-        <Typography variant="h5" sx={{ fontFamily: "Monospace" }}>
-          TheSocNet
-        </Typography>
-        <Button startIcon={<HomeIcon />} sx={{ height: 40 }} href="/">
+    <Stack direction="row" sx={container}>
+      <Stack sx={d_nav}>
+        <Typography variant="h5">TheSocNet</Typography>
+
+        <Button startIcon={<HomeIcon />} sx={d_nav_btn} href="/">
           Home
         </Button>
         <Button
           startIcon={<EmojiEventsIcon />}
-          sx={{ height: 40 }}
+          sx={d_nav_btn}
           href="/ranking/all"
         >
           Ranking
         </Button>
 
         {user ? (
-          <Stack alignItems="flex-start">
+          [
             <Button
+              key={0}
               startIcon={<HowToVoteIcon />}
-              sx={{ height: 40 }}
+              sx={d_nav_btn}
               href="/vote/freshman/new"
             >
               Vote
-            </Button>
+            </Button>,
             <Button
+              key={1}
               startIcon={<AccountBoxIcon />}
-              sx={{ height: 40 }}
+              sx={d_nav_btn}
               href="/profile/stats"
             >
               Profile
-            </Button>
+            </Button>,
             <Button
+              key={2}
               startIcon={<LogoutIcon />}
-              sx={{ height: 40 }}
+              sx={d_nav_btn}
               href="/"
               onClick={logout}
             >
               Logout
-            </Button>
-          </Stack>
+            </Button>,
+          ]
         ) : (
           <Button
             startIcon={<LoginIcon />}
-            sx={{ height: 40, width: "auto" }}
+            sx={d_nav_btn}
             onClick={first_login}
           >
             Login
@@ -221,15 +186,8 @@ const Layout = () => {
         )}
       </Stack>
       <Divider orientation="vertical" />
-      <Box
-        sx={{
-          width: 1,
-          px: 2,
-          maxHeight: "100vh",
-          overflow: "auto",
-        }}
-        id="main"
-      >
+
+      <Box sx={content} id="main">
         <Outlet context={[user, login, logout]} />
       </Box>
     </Stack>
@@ -237,3 +195,30 @@ const Layout = () => {
 };
 
 export default Layout;
+
+const container = {
+  height: "100vh",
+  width: "100vw",
+  bgcolor: "#121212",
+};
+
+const d_nav = {
+  height: "100vh",
+  width: 150,
+  alignItems: "flex-start",
+  mx: "10px",
+};
+
+const m_nav_btn = {
+  maxWidth: "30px",
+  minWidth: "30px",
+  justifyContent: "center",
+};
+const d_nav_btn = { height: 40, width: 1, justifyContent: "flex-start" };
+
+const content = {
+  width: 1,
+  height: 1,
+  px: "10px",
+  overflow: "auto",
+};

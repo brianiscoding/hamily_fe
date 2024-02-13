@@ -39,7 +39,6 @@ const Vote = () => {
     },
     [new_old, year]
   );
-
   useEffect(() => {
     if (!user) {
       set_students([]);
@@ -47,7 +46,6 @@ const Vote = () => {
     }
     fetch_students(30);
   }, [user, year, new_old, fetch_students]);
-
   const handle_vote = (other, type, i) =>
     axios
       .patch(
@@ -74,24 +72,16 @@ const Vote = () => {
       })
       .catch((err) => console.error(err));
 
-  const button_style = {
-    maxWidth: "40px",
-    minWidth: "40px",
-    minHeight: "50px",
-    maxHeight: "50px",
-  };
-
   if (isMobile)
     return (
       <Stack>
         <Typography variant="h6">Vote</Typography>
-        <Stack direction="row" spacing={1} justifyContent="space-between">
+        <Stack direction="row" justifyContent="space-between">
           {["Freshman", "Sophomore", "Junior", "Senior"].map((e, i) => (
             <Button
               onClick={() => navigate(`/vote/${e.toLowerCase()}/${new_old}`)}
               key={e}
-              style={{ maxWidth: "40px", minWidth: "40px" }}
-              sx={{ fontSize: 14 }}
+              style={m_btn}
               variant={`${e.toLowerCase() === year ? "outlined" : ""}`}
             >
               {e.substring(0, 3)}
@@ -100,8 +90,7 @@ const Vote = () => {
           {["New", "Old"].map((e, i) => (
             <Button
               onClick={() => navigate(`/vote/${year}/${e.toLowerCase()}`)}
-              style={{ maxWidth: "40px", minWidth: "40px" }}
-              sx={{ fontSize: 14 }}
+              style={m_btn}
               variant={`${e.toLowerCase() === new_old ? "outlined" : ""}`}
               key={e}
             >
@@ -124,54 +113,35 @@ const Vote = () => {
         >
           <Grid container sx={{ justifyContent: "space-evenly" }}>
             {students.map((student, i) => (
-              <Grid
-                item
-                key={i}
-                sx={{
-                  mt: "40px",
-                  mx: "20px",
-                  bgcolor: "",
-                  borderRadius: 2,
-                  border: 1,
-                  borderColor: "grey.500",
-                }}
-              >
-                <Stack direction="row">
-                  <Profile student={student} />
-                  <Stack
-                    sx={{
-                      justifyContent: "space-evenly",
-                      borderRadius: 2,
-                      bgcolor: "",
-                    }}
+              <Stack key={i} direction="row" sx={card}>
+                <Profile student={student} />
+                <Stack sx={types}>
+                  <Button
+                    style={button_style}
+                    key={0}
+                    disabled={student.type === "know_not"}
+                    onClick={() => handle_vote(student, "know_not", i)}
                   >
-                    <Button
-                      style={button_style}
-                      key="one"
-                      disabled={student.type === "know_not"}
-                      onClick={() => handle_vote(student, "know_not", i)}
-                    >
-                      <ClearIcon />
-                    </Button>
-                    <Button
-                      style={button_style}
-                      key="two"
-                      disabled={student.type === "know"}
-                      onClick={() => handle_vote(student, "know", i)}
-                    >
-                      <CheckIcon />
-                    </Button>
-                    <Button
-                      style={button_style}
-                      key="three"
-                      disabled={student.type === "know_well"}
-                      onClick={() => handle_vote(student, "know_well", i)}
-                    >
-                      <StarBorderIcon />
-                    </Button>
-                  </Stack>
+                    <ClearIcon />
+                  </Button>
+                  <Button
+                    style={button_style}
+                    key={1}
+                    disabled={student.type === "know"}
+                    onClick={() => handle_vote(student, "know", i)}
+                  >
+                    <CheckIcon />
+                  </Button>
+                  <Button
+                    style={button_style}
+                    key={2}
+                    disabled={student.type === "know_well"}
+                    onClick={() => handle_vote(student, "know_well", i)}
+                  >
+                    <StarBorderIcon />
+                  </Button>
                 </Stack>
-              </Grid>
+              </Stack>
             ))}
           </Grid>
         </InfiniteScroll>
@@ -179,14 +149,10 @@ const Vote = () => {
     );
 
   return (
-    <Stack sx={{ width: 1 }}>
+    <Stack>
       <Typography variant="h1">Voting</Typography>
 
-      <Stack
-        sx={{ height: "40px" }}
-        direction="row"
-        justifyContent="space-between"
-      >
+      <Stack sx={d_nav} direction="row">
         <Stack direction="row">
           {["Freshman", "Sophomore", "Junior", "Senior"].map((e, i) => (
             <Button
@@ -226,54 +192,35 @@ const Vote = () => {
       >
         <Grid container sx={{ justifyContent: "space-evenly" }}>
           {students.map((student, i) => (
-            <Grid
-              item
-              key={i}
-              sx={{
-                mt: "40px",
-                mx: "20px",
-                bgcolor: "",
-                borderRadius: 2,
-                border: 1,
-                borderColor: "grey.500",
-              }}
-            >
-              <Stack direction="row">
-                <Profile student={student} />
-                <Stack
-                  sx={{
-                    justifyContent: "space-evenly",
-                    borderRadius: 2,
-                    bgcolor: "",
-                  }}
+            <Stack key={i} direction="row" sx={card}>
+              <Profile student={student} />
+              <Stack sx={types}>
+                <Button
+                  style={button_style}
+                  key={0}
+                  disabled={student.type === "know_not"}
+                  onClick={() => handle_vote(student, "know_not", i)}
                 >
-                  <Button
-                    style={button_style}
-                    key="one"
-                    disabled={student.type === "know_not"}
-                    onClick={() => handle_vote(student, "know_not", i)}
-                  >
-                    <ClearIcon />
-                  </Button>
-                  <Button
-                    style={button_style}
-                    key="two"
-                    disabled={student.type === "know"}
-                    onClick={() => handle_vote(student, "know", i)}
-                  >
-                    <CheckIcon />
-                  </Button>
-                  <Button
-                    style={button_style}
-                    key="three"
-                    disabled={student.type === "know_well"}
-                    onClick={() => handle_vote(student, "know_well", i)}
-                  >
-                    <StarBorderIcon />
-                  </Button>
-                </Stack>
+                  <ClearIcon />
+                </Button>
+                <Button
+                  style={button_style}
+                  key={1}
+                  disabled={student.type === "know"}
+                  onClick={() => handle_vote(student, "know", i)}
+                >
+                  <CheckIcon />
+                </Button>
+                <Button
+                  style={button_style}
+                  key={2}
+                  disabled={student.type === "know_well"}
+                  onClick={() => handle_vote(student, "know_well", i)}
+                >
+                  <StarBorderIcon />
+                </Button>
               </Stack>
-            </Grid>
+            </Stack>
           ))}
         </Grid>
       </InfiniteScroll>
@@ -282,3 +229,27 @@ const Vote = () => {
 };
 
 export default Vote;
+const d_nav = {
+  height: "40px",
+  justifyContent: "space-between",
+  direction: "row",
+};
+const button_style = {
+  maxWidth: "40px",
+  minWidth: "40px",
+  minHeight: "50px",
+  maxHeight: "50px",
+};
+const card = {
+  mt: "40px",
+  mx: "20px",
+  bgcolor: "",
+  borderRadius: 2,
+  border: 1,
+  borderColor: "grey.500",
+};
+const types = {
+  justifyContent: "space-evenly",
+  borderRadius: 2,
+};
+const m_btn = { maxWidth: "40px", minWidth: "40px", fontSize: 16 };
