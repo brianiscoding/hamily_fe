@@ -134,7 +134,7 @@ const Layout = () => {
   return (
     <Stack direction="row" sx={container}>
       <Stack sx={d_nav}>
-        <Typography variant="h5">TheSocNet</Typography>
+        <Typography variant="6">TheSocNet</Typography>
 
         <Button startIcon={<HomeIcon />} sx={d_nav_btn} href="/">
           Home
