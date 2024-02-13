@@ -42,8 +42,9 @@ const Profile = ({ student }) => {
 export default Profile;
 
 const m_card = {
-  width: 1,
-  px: "10px",
+  width: 270,
+  height: 170,
+  px: "20px",
 };
 const d_card = {
   width: 270,
