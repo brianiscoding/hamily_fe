@@ -7,7 +7,7 @@ import { isMobile } from "react-device-detect";
 
 const Home = () => {
   return (
-    <Stack>
+    <Stack sx={{ pb: "100px" }}>
       <Typography variant={`${isMobile ? "h4" : "h1"}`}>Welcome!</Typography>
       <Typography sx={{ fontSize: `${isMobile ? "16" : "20"}px` }}>
         What is TheSocNet?

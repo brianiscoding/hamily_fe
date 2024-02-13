@@ -74,7 +74,7 @@ const Vote = () => {
 
   if (isMobile)
     return (
-      <Stack>
+      <Stack sx={{ width: 1 }}>
         <Typography variant="h6">Vote</Typography>
         <Stack direction="row" justifyContent="space-between">
           {["Freshman", "Sophomore", "Junior", "Senior"].map((e, i) => (
@@ -243,7 +243,6 @@ const button_style = {
 const card = {
   mt: "40px",
   mx: "20px",
-  bgcolor: "",
   borderRadius: 2,
   border: 1,
   borderColor: "grey.500",
