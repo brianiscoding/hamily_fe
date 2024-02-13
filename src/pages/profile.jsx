@@ -24,6 +24,7 @@ const Profile = () => {
       sx={{
         width: `${isMobile ? 1 : "600px"}`,
         margin: "auto",
+        mt: "20px",
       }}
     >
       {user ? (
